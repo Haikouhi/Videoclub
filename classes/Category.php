@@ -1,70 +1,68 @@
 <?php
 
-//Movie.php
+// Category.php
 
-class Category {
-    protected $id; 
+class Category extends Db {
+
+    /**
+     * Attributs
+     */
+    protected $id;
     protected $title;
     protected $description;
-    
+    protected $bdd;
 
+    /**
+     * Méthodes magiques
+     */
     public function __construct($title, $description) {
         $this->setTitle($title);
         $this->setDescription($description);
     }
 
-     public function id(){
+    /**
+     * Getters
+     */
+    public function id() {
         return $this->id;
     }
 
-    public function title(){
+    public function title() {
         return $this->title;
     }
 
-    public function description(){
+    public function description() {
         return $this->description;
     }
 
-
-
-
-    // setters
-
+    /**
+     * Setters
+     */
     public function setTitle($title) {
         $this->title = $title;
         return $this;
-
     }
 
     public function setDescription($description) {
         $this->description = $description;
         return $this;
-
     }
 
+    /**
+     * Methods
+     */
 
-    // methods
-  public function save() {
-        $host       = 'localhost'; // Hôte de la base de données
-        $dbname     = 'videoclub'; // Nom de la bdd
-        $port       = '3308'; // Ou 3308 selon la configuration
-        $login      = 'root'; // Par défaut dans WAMP
-        $password   = ''; // Par défaut dans WAMP (pour MAMP : 'root')
-        try {
-            // Essaie de faire ce script...
-            $bdd = new PDO('mysql:host='.$host.';dbname='.$dbname.';charset=utf8;port='.$port, $login, $password);
-        }
-        catch (Exception $e) {
-            // Sinon, capture l'erreur et affiche la
-            die('Erreur : ' . $e->getMessage());
-        }
-        $res = $bdd->prepare('INSERT INTO Category(title, description) VALUES(:title, :description)');
-        $res->execute([
-            "title" => $this->title(),
-            "description" => $this->description()
+    public function save() {
+
+        $this->dbCreate("Category", [
+            "title"         => $this->title(),
+            "description"   => $this->description()
         ]);
 
-        $this->id = $bdd->lastInsertId();
+//        $this->id = $bdd->lastInsertId();
+    }
 
+    public function delete() {
+        //
     }
 }
