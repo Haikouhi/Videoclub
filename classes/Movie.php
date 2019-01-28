@@ -7,7 +7,7 @@ class Movie {
     protected $title;
     protected $release_date;
     protected $plot; 
-    protected $id_category;
+    protected $idCategory;
 
 
      public function id(){
@@ -26,10 +26,13 @@ class Movie {
         return $this->plot;
     }
 
-    public function id_category(){
-        return $this->id_category;
+    public function idCategory(){
+        return $this->idCategory;
     }
 
+    public function category(){
+        return $this->category;
+    }
 
 
     // setting
@@ -53,9 +56,10 @@ class Movie {
     }
 
     public function setCategory(Category $category) {
-        $this->category = $category;
-        return $this;
 
-    }
+       $this->category_id  = $category->id();
+       return $this;
+
+   }
 
 }

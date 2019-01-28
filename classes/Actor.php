@@ -2,7 +2,7 @@
 
 //Movie.php
 
-class Category {
+class Actor {
     protected $id; 
     protected $firstname;
     protected $lastname;
