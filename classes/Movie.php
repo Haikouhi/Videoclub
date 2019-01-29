@@ -1,65 +1,89 @@
-<?php
+<?php 
 
-//Movie.php
+// Movie.php
 
-class Movie {
-    protected $id; 
+class Movie extends Db {
+    
+    protected $id;
     protected $title;
-    protected $release_date;
-    protected $plot; 
-    protected $idCategory;
+    protected $releaseDate;
+    protected $plot;
+    protected $id_category;
 
+    public function __construct() {
 
-     public function id(){
+    }
+
+    public function id() {
         return $this->id;
     }
 
-    public function title(){
+    public function title() {
         return $this->title;
     }
 
-    public function release_date(){
-        return $this->release_date;
+    public function releaseDate() {
+        return $this->releaseDate;
     }
 
-    public function plot(){
+    public function plot() {
         return $this->plot;
     }
 
-    public function idCategory(){
+    public function idCategory() {
         return $this->idCategory;
     }
-
-    public function category(){
-        return $this->category;
+    
+    public function category() {
+        // return $this->category->name;
     }
-
-
-    // setting
 
     public function setTitle($title) {
         $this->title = $title;
         return $this;
-
     }
 
-    public function setRelease_date($release_date) {
-        $this->release_date = $release_date;
+    public function setReleaseDate($releaseDate) {
+        $this->releaseDate = $releaseDate;
         return $this;
-
     }
 
     public function setPlot($plot) {
         $this->plot = $plot;
         return $this;
-
     }
 
     public function setCategory(Category $category) {
 
-       $this->category_id  = $category->id();
-       return $this;
+        // $this->category_id = $category->id();
 
-   }
+        return $this;
+    }
+
+
+    public function save() {
+        $this->dbCreate("Movie", [
+            "title"         => $this->title(),
+            "release_date"  => $this->releaseDate(),
+            "plot"          => $this->plot()
+        ]);
+    }
+
+    public function deleteActor($idActor) {
+        $this->dbDelete('Movie', [
+            'id_movie' => $this->id(),
+            'id_actor' => $idActor
+        ]);
+    }
 
 }
+
+$movie = new Movie();
+/* 
+
+$movie->categoryId();
+
+$movie->category()->description();
+
+$movie->actors();
+ */

@@ -1,39 +1,47 @@
 <?php
 
-//Movie.php
+// Actor.php
 
 class Actor {
-    protected $id; 
+
+    protected $id;
     protected $firstname;
     protected $lastname;
-    
 
-     public function id(){
+    const TABLE_NAME = "Actor";
+
+    public function __construct() {
+
+    }
+
+    public function id() {
         return $this->id;
     }
 
-    public function firstname(){
+    public function firstname() {
         return $this->firstname;
     }
 
-    public function lastname(){
+    public function lastname() {
         return $this->lastname;
     }
 
-
-
-
-    // setting
-
-    public function setFirstname($firstname) {
+    public function setfirstname($firstname) {
         $this->firstname = $firstname;
         return $this;
-
     }
 
-    public function setLastname($lastname) {
+    public function setlastname($lastname) {
         $this->lastname = $lastname;
         return $this;
+    }
+
+    public function save() {
+
+        $this->dbCreate("Actor", [
+            "firstname" => $this->firstname(),
+            "lastname" => $this->lastname()
+        ]);
 
     }
 }
