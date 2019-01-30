@@ -10,6 +10,7 @@ class Employee extends Db {
     protected $id;
     protected $firstname;
     protected $lastname;
+    protected $position;
     protected $employement_date;
 
     /**
