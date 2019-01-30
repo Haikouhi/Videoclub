@@ -24,7 +24,7 @@ class Customer extends Db {
     public function __construct($firstname, $lastname, $status, $id = null) {
         $this->setFirstname($firstname);
         $this->setLastname($lastname);
-        $this->setEmployement_date($status);
+        $this->setStatus($status);
 
         if (isset($id)) {
             $this->id = $id;
