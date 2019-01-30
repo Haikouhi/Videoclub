@@ -23,6 +23,20 @@ class Db {
         return $bdd;
     }
 
+    /**
+     * Permet d'enregistrer (INSERT) des données en base de données.
+     * @param string    $table  Nom de la table dans lequel faire un INSERT
+     * @param array     $data   Array contenant en clé les noms des champs de la table, en valeurs les values à enregistrer
+     * 
+     * @return int      Id de l'enregistrement.
+     * 
+     * Exemple :
+     * $table = "Category";
+     * $data = [
+     *      'title'         => "Nouvelle catégorie",
+     *      'description'   => 'Ma nouvelle catégorie.',
+     * ];
+     */
     protected static function dbCreate(string $table, array $data) {
 
         $bdd = self::getDb();
@@ -39,6 +53,17 @@ class Db {
         return $bdd->lastInsertId();
     }
 
+    /**
+     * Permet de supprimer (DELETE) des données en base de données.
+     * @param string    $table  Nom de la table dans lequel faire un DELETE
+     * @param array     $data   Array contenant en clé la PK de la table, en value la valeur à donner.
+     * 
+     * @return void
+     * 
+     * Exemple: 
+     * $table = "Movie";
+     * $data = [ 'id' => 3 ];
+     */
     protected static function dbDelete(string $table, array $data) {
 
         $bdd = self::getDb();
@@ -53,9 +78,23 @@ class Db {
         return;
     }
 
+    /**
+     * Permet de récupérer (SELECT) des données en base de données.
+     * @param string    $table  Nom de la table dans lequel faire un SELECT
+     * @param array     $request   Array contenant une liste de trios ["champ", "opérateur", "valeur"].
+     * 
+     * @return array    Données demandées.
+     * 
+     * Exemple: 
+     * $table = "Movie";
+     * $request = [
+     *      [ 'title', "like",'Rocky' ],
+     *      [ 'realease_date', '>', '2000-01-01']
+     * ];
+     */
     protected static function dbFind(string $table, array $request = null) {
 
-        //$bdd = self::getDb();
+        $bdd = self::getDb();
 
         $req = "SELECT * FROM " . $table;
 
@@ -67,8 +106,6 @@ class Db {
 
             foreach($request as $r) {
 
-                var_dump($r);
-
                 switch($r[0]):
 
                     case "orderBy":
@@ -76,7 +113,7 @@ class Db {
                         break;
                     
                     default:
-                        $req .= "`". htmlspecialchars($r[0]) . "` " . htmlspecialchars($r[1]) . " `" . htmlspecialchars($r[2]) . "`";
+                        $req .= "`". htmlspecialchars($r[0]) . "` " . htmlspecialchars($r[1]) . " '" . htmlspecialchars($r[2]) . "'";
                         $req .= " AND ";
 
                 endswitch;
@@ -88,9 +125,6 @@ class Db {
 
         }
 
-        var_dump($req);
-        die();
-
         $response = $bdd->query($req);
 
         $data = [];
@@ -99,14 +133,34 @@ class Db {
             $data[] = $donnees;
         }
 
+        if (count($data) == 1) {
+            $data = $data[0];
+        }
+
         return $data;
 
     }
 
-
+    /**
+     * Permet de mettre à jour (UPDATE) des données en base de données.
+     * @param string    $table  Nom de la table dans lequel faire un UPDATE
+     * @param array     $data   Array contenant en clé les noms des champs de la table, en valeurs les values à enregistrer.
+     * 
+     * @return int      Id de l'élément modifié.
+     * 
+     * OBLIGATOIRE : Passer un champ 'id' dans le tableau 'data'.
+     * 
+     * Exemple :
+     * $table = "Category";
+     * $data = [
+     *      'id'            => 4,
+     *      'title'         => "Nouveau titre de catégorie",
+     *      'description'   => 'Ma nouvelle catégorie.',
+     * ];
+     */
     protected static function dbUpdate(string $table, array $data) {
 
-        //$bdd = self::getDb();
+        $bdd = self::getDb();
 
         $req  = "UPDATE " . $table . " SET ";
 
@@ -114,7 +168,7 @@ class Db {
 
         foreach($data as $key => $value) {
             if ($key == 'id') {
-                $whereIdString = " WHERE id = " . $value;
+                $whereIdString = " WHERE id = :id";
             }
 
             else {
@@ -126,9 +180,6 @@ class Db {
 
         $req = substr($req, 0, -2);
         $req .= $whereIdString;
-
-        var_dump($req);
-        die();
 
         $response = $bdd->prepare($req);
 
