@@ -63,11 +63,20 @@ class Customer extends Db {
         return $this;
     }
 
-    public function setStatus() {
-        $this->status = $status;
-        return $this;
-    }
 
+    public function setStatus($status){
+
+       $statusAcceptee = ['regular', 'vip', 'premium'];
+
+       if( !in_array( $status, $statusAcceptee) ) {
+           echo "this status is not correct.";
+       }
+       else {
+           $this->status = $status;
+       }
+       return $this;
+    }
+    
     /**
      * Methods
      */

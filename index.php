@@ -23,6 +23,9 @@ $movie = new Movie("Le livre de la jungle", $releaseDate, "Un film sur la jungle
 $movie->save();
 // $movie->delete();
 
+$customer = new Customer("Grace", "Hopper", "vip");
+
+
 /**
  * Test des Getters
  */
@@ -33,6 +36,7 @@ var_dump(   $movie->title()   );
 var_dump(   $cat->description()   );
 var_dump(   $actor->firstname()   );
 var_dump(   $movie->category()->title()   );
+var_dump(   $customer);
 
 /**
  * Test des Setters
@@ -79,6 +83,7 @@ $movie->title(); // Un film a accès à son titre
 
 // impossible : Movie::title(); (l'usine donne des titres aux films, mais elle-même n'a pas de titre)
 
-Movie::findAll(); // L'usine a accès à tous les films créés
+// Movie::findAll(); // L'usine a accès à tous les films créés
+
 
 // impossible: $movie->findAll(); (un film n'a pas accès aux autres films créés)

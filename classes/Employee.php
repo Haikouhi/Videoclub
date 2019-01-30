@@ -69,10 +69,18 @@ class Employee extends Db {
         return $this;
     }
 
-    public function setPosition($position) {
-        $this->position = $position;
-        return $this;
-    }
+    public function setPosition($position){
+
+       $positionAcceptee = ['accounting', 'seller', 'marketing'];
+
+       if( !in_array( $position, $positionAcceptee) ) {
+           echo "This job title is incorrect.";
+       }
+       else {
+           $this->position = $position;
+       }
+       return $this;
+   }
 
     public function setEmployement_date() {
         $this->employement_date = $employement_date;
